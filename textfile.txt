@@ -1,0 +1,467 @@
+//Za 10 gradovi vo Makedonija, se sledat prosecnite mesecni temperaturi vo tekot na edna godina.Da se napravat presmetki za prosecni godisni temperaturi za sekoj grad, gradovi koi imaat prosecni godisni temperaturi nad godisniot prosek,prosecni temperaturi za sekoe godisno vreme za gradovite, mesec so najvisoka prosecna temperatura i grad so najvisoka posecna temperatura vo toj mesec za cela Makedonija.
+//Izraboti Klaudija Kondovska INKI829
+
+#include <iostream>
+#include <algorithm>
+#include <iterator>
+
+using namespace std;
+
+//Deklariranje na varijabli i funkcii koi se koristat vo programata
+
+int godisenProsekGrad(int grad[12]);
+
+//Deklaracija na funckiite za prosecni temperaturi po godisni vreminja na gradovite
+
+double proletProsek(int grad[12]);
+double letoProsek(int grad[12]);
+double esenProsek(int grad[12]);
+double zimaProsek(int grad[12]);
+
+//Deklaracija na funckiite za prosecni temperaturi po meseci na gradovite
+
+double januarProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+double fevruarProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+double martProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+double aprilProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+double majProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+double juniProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+double juliProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+double avgustProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+double septemvriProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+double oktomvriProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+double noemvriProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+double dekemvriProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+
+//Funkcija za pronaoganje na najtopliot grad vo najtopliot mesec od godinata
+
+double gradMesec(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te);
+
+int main () {
+
+    //Vnesuvanje na glavnite promenlivi na prosecnite temperaturi na mesecite na gradovite
+
+    int struga[12]={ 2, 2, 7, 10, 15, 18, 22, 25, 14, 10, 9, 2 },
+	 bitola[12]={ 3, 2, 5,  9, 16, 20, 22, 24, 17,  10, 7, 3 },
+           skopje[12]={ 3, 3, 6, 8, 18, 21, 23, 25, 16, 9, 7, 3 },
+           kicevo[12]={ 1, 1, 4,  9, 15, 18, 21, 21, 16,  7, 5, 2 },
+        ohrid[12]={ 3, 4, 6, 11, 15, 18, 21, 24, 13, 7, 5, 4 },
+             resen[12]={ 3, 3, 7, 12, 14, 17, 20, 23, 16, 11, 6, 3 },
+         gevgelija[12]={ 6, 6, 9,  13, 17, 20, 24, 29, 19,  8, 5, 6 },
+            prilep[12]={ 3, 4, 7, 10, 13, 19, 21, 24, 16, 9, 5, 3 },
+           kocani[12]={ 5, 5, 8, 11, 17, 20, 24, 27, 15,  9, 4, 5 },
+         tetovo[12]={ 1, 1, 4, 8, 11, 18, 21, 23, 14, 16, 9, 1 };
+
+    //Presmetuvanje na godisen prosek na temperaturite na gradovite
+
+    float prosekStruga=godisenProsekGrad(struga)/12.0;
+    float prosekBitola=godisenProsekGrad(bitola)/12.0;
+    float prosekSkopje=godisenProsekGrad(skopje)/12.0;
+    float prosekKicevo=godisenProsekGrad(kicevo)/12.0;
+    float prosekOhrid=godisenProsekGrad(ohrid)/12.0;
+    float prosekResen=godisenProsekGrad(resen)/12.0;
+    float prosekGevgelija=godisenProsekGrad(gevgelija)/12.0;
+    float prosekPrilep=godisenProsekGrad(prilep)/12.0;
+    float prosekKocani=godisenProsekGrad(kocani)/12.0;
+    float prosekTetovo=godisenProsekGrad(tetovo)/12.0;
+
+    //Deklaracija na promenlivi za drzaven godisen prosek, mesecen prosek, najtopol mesec i najtopol grad vo toj mesec
+
+    float drzavenGodisenProsek=0;
+    float mesecenProsek[12];
+    int najtopolMesec;
+    int najtopolGrad;
+
+    float proletStruga, letoStruga, esenStruga, zimaStruga;
+
+    //Pecatenje na godisnite prosecni temperaturi
+
+    cout<<"VAZNO! \nSite brojki izrazeni vo programata se odnesuvaat na stepeni celziusovi"<<endl<<endl<<endl;
+
+    cout<<"Prosecna godisna temperatura za Struga: "<<prosekStruga<<endl;
+    cout<<"Prosecna godisna temperatura za Bitola: "<<prosekBitola<<endl;
+    cout<<"Prosecna godisna temperatura za Skopje: "<<prosekSkopje<<endl;
+    cout<<"Prosecna godisna temperatura za Kicevo: "<<prosekKicevo<<endl;
+	 cout<<"Prosecna godisna temperatura za Ohrid: "<<prosekOhrid<<endl;
+    cout<<"Prosecna godisna temperatura za Resen: "<<prosekResen<<endl;
+    cout<<"Prosecna godisna temperatura za Gevgelija: "<<prosekGevgelija<<endl;
+    cout<<"Prosecna godisna temperatura za Prilep: "<<prosekPrilep<<endl;
+    cout<<"Prosecna godisna temperatura za Kocani: "<<prosekKocani<<endl;
+    cout<<"Prosecna godisna temperatura za Tetovo: "<<prosekTetovo<<endl;
+    cout<<endl<<endl<<endl;
+
+    //Pecatenje koi gradovi se nad prosecnata temperatura vo godinata
+
+    drzavenGodisenProsek=(prosekStruga+prosekBitola+prosekSkopje+prosekKicevo+prosekOhrid+prosekResen+prosekGevgelija+prosekPrilep+prosekKocani+prosekTetovo)/10;
+
+    if (prosekStruga > drzavenGodisenProsek) {
+        cout<<"Gradot Struga ima prosecna godisna temperatura pogolema od godisniot prosek!"<<endl;
+    }
+
+    if (prosekBitola > drzavenGodisenProsek) {
+        cout<<"Gradot Bitola ima prosecna godisna temperatura pogolema od godisniot prosek!"<<endl;
+    }
+
+    if (prosekSkopje > drzavenGodisenProsek) {
+        cout<<"Gradot Skopje ima prosecna godisna temperatura pogolema od godisniot prosek!"<<endl;
+    }
+
+    if (prosekKicevo > drzavenGodisenProsek) {
+        cout<<"Gradot Kicevo ima prosecna godisna temperatura pogolema od godisniot prosek!"<<endl;
+    }
+
+    if (prosekOhrid > drzavenGodisenProsek) {
+        cout<<"Gradot Ohrid ima prosecna godisna temperatura pogolema od godisniot prosek!"<<endl;
+    }
+
+    if (prosekResen > drzavenGodisenProsek) {
+        cout<<"Gradot Resen ima prosecna godisna temperatura pogolema od godisniot prosek!"<<endl;
+    }
+
+    if (prosekGevgelija > drzavenGodisenProsek) {
+        cout<<"Gradot Gevgelija ima prosecna godisna temperatura pogolema od godisniot prosek!"<<endl;
+    }
+if (prosekPrilep > drzavenGodisenProsek) {
+        cout<<"Gradot Prilep ima prosecna godisna temperatura pogolema od godisniot prosek!"<<endl;
+    }
+
+    if (prosekKocani > drzavenGodisenProsek) {
+        cout<<"Gradot Kocani ima prosecna godisna temperatura pogolema od godisniot prosek!"<<endl;
+    }
+
+    if (prosekTetovo > drzavenGodisenProsek) {
+        cout<<"Gradot Tetovo ima prosecna godisna temperatura pogolema od godisniot prosek!"<<endl;
+    }
+
+    cout<<endl<<endl<<endl;
+
+    //Pecatenje prosecna temperatura na gradovite po godisni vreminja
+
+    cout<<"Prosecna temperatura za prolet vo Struga e: "<<proletProsek(struga)<<endl;
+    cout<<"Prosecna temperatura za leto vo Struga e: "<<letoProsek(struga)<<endl;
+    cout<<"Prosecna temperatura za esen vo Struga e: "<<esenProsek(struga)<<endl;
+    cout<<"Prosecna temperatura za zima vo Struga e: "<<zimaProsek(struga)<<endl<<endl;
+
+    cout<<"Prosecna temperatura za prolet vo Bitola e: "<<proletProsek(bitola)<<endl;
+    cout<<"Prosecna temperatura za leto vo Bitola e: "<<letoProsek(bitola)<<endl;
+    cout<<"Prosecna temperatura za esen vo Bitola e: "<<esenProsek(bitola)<<endl;
+    cout<<"Prosecna temperatura za zima vo Bitola e: "<<zimaProsek(bitola)<<endl<<endl;
+
+    cout<<"Prosecna temperatura za prolet vo Skopje e: "<<proletProsek(skopje)<<endl;
+    cout<<"Prosecna temperatura za leto vo Skopje e: "<<letoProsek(skopje)<<endl;
+    cout<<"Prosecna temperatura za esen vo Skopje e: "<<esenProsek(skopje)<<endl;
+    cout<<"Prosecna temperatura za zima vo Skopje e: "<<zimaProsek(skopje)<<endl<<endl;
+
+    cout<<"Prosecna temperatura za prolet vo Kicevo e: "<<proletProsek(kicevo)<<endl;
+    cout<<"Prosecna temperatura za leto vo Kicevo e: "<<letoProsek(kicevo)<<endl;
+    cout<<"Prosecna temperatura za esen vo Kicevo e: "<<esenProsek(kicevo)<<endl;
+    cout<<"Prosecna temperatura za zima vo Kicevo e: "<<zimaProsek(kicevo)<<endl<<endl;
+
+    cout<<"Prosecna temperatura za prolet vo Ohrid e: "<<proletProsek(ohrid)<<endl;
+	cout<<"Prosecna temperatura za leto vo Ohrid e: "<<letoProsek(ohrid)<<endl;
+    cout<<"Prosecna temperatura za esen vo Ohrid e: "<<esenProsek(ohrid)<<endl;
+    cout<<"Prosecna temperatura za zima vo Ohrid e: "<<zimaProsek(ohrid)<<endl<<endl;
+
+    cout<<"Prosecna temperatura za prolet vo Resen e: "<<proletProsek(resen)<<endl;
+    cout<<"Prosecna temperatura za leto vo Resen e: "<<letoProsek(resen)<<endl;
+    cout<<"Prosecna temperatura za esen vo Resen e: "<<esenProsek(resen)<<endl;
+    cout<<"Prosecna temperatura za zima vo Resen e: "<<zimaProsek(resen)<<endl<<endl;
+
+    cout<<"Prosecna temperatura za prolet vo Gevgelija e: "<<proletProsek(gevgelija)<<endl;
+    cout<<"Prosecna temperatura za leto vo Gevgelija e: "<<letoProsek(gevgelija)<<endl;
+    cout<<"Prosecna temperatura za esen vo Gevgelija e: "<<esenProsek(gevgelija)<<endl;
+    cout<<"Prosecna temperatura za zima vo Gevgelija e: "<<zimaProsek(gevgelija)<<endl<<endl;
+
+    cout<<"Prosecna temperatura za prolet vo Prilep e: "<<proletProsek(prilep)<<endl;
+    cout<<"Prosecna temperatura za leto vo Prilep e: "<<letoProsek(prilep)<<endl;
+    cout<<"Prosecna temperatura za esen vo Prilep e: "<<esenProsek(prilep)<<endl;
+    cout<<"Prosecna temperatura za zima vo Prilep e: "<<zimaProsek(prilep)<<endl<<endl;
+
+    cout<<"Prosecna temperatura za prolet vo Kocani e: "<<proletProsek(kocani)<<endl;
+    cout<<"Prosecna temperatura za leto vo Kocani e: "<<letoProsek(kocani)<<endl;
+    cout<<"Prosecna temperatura za esen vo Kocani e: "<<esenProsek(kocani)<<endl;
+    cout<<"Prosecna temperatura za zima vo Kocani e: "<<zimaProsek(kocani)<<endl<<endl;
+
+    cout<<"Prosecna temperatura za prolet vo Tetovo e: "<<proletProsek(tetovo )<<endl;
+    cout<<"Prosecna temperatura za leto vo Tetovo  e: "<<letoProsek(tetovo )<<endl;
+    cout<<"Prosecna temperatura za esen vo Tetovo  e: "<<esenProsek(tetovo )<<endl;
+    cout<<"Prosecna temperatura za zima vo Tetovo  e: "<<zimaProsek(tetovo )<<endl<<endl<<endl;
+
+    //Popolnuvanje na nizata koja gi sodrzi mesecnite proseci za temperaturata od site gradovi so pomos na funkciite koi se deklarirani gore
+
+    mesecenProsek[0]=januarProsek(struga[0], bitola[0], skopje[0], kicevo[0], ohrid[0], resen[0], gevgelija[0], prilep[0], kocani[0], tetovo[0]);
+    mesecenProsek[1]=fevruarProsek(struga[1], bitola[1], skopje[1], kicevo[1], ohrid[1], resen[1], gevgelija[1], prilep[1], kocani[1], tetovo[1]);
+    mesecenProsek[2]=martProsek(struga[2], bitola[2], skopje[2], kicevo[2], ohrid[2], resen[2], gevgelija[2], prilep[2], kocani[2], tetovo[2]);
+    mesecenProsek[3]=aprilProsek(struga[3], bitola[3], skopje[3], kicevo[3], ohrid[3], resen[3], gevgelija[3], prilep[3], kocani[3], tetovo[3]);
+    mesecenProsek[4]=majProsek(struga[4], bitola[4], skopje[4], kicevo[4], ohrid[4], resen[4], gevgelija[4], prilep[4], kocani[4], tetovo[4]);
+    mesecenProsek[5]=juniProsek(struga[5], bitola[5], skopje[5], kicevo[5], ohrid[5], resen[5], gevgelija[5], prilep[5], kocani[5], tetovo[5]);
+    mesecenProsek[6]=juliProsek(struga[6], bitola[6], skopje[6], kicevo[6], ohrid[6], resen[6], gevgelija[6], prilep[6], kocani[6], tetovo[6]);
+    mesecenProsek[7]=avgustProsek(struga[7], bitola[7], skopje[7], kicevo[7], ohrid[7], resen[7], gevgelija[7], prilep[7], kocani[7], tetovo[7]);
+    mesecenProsek[8]=septemvriProsek(struga[8], bitola[8], skopje[8], kicevo[8], ohrid[8], resen[8], gevgelija[8], prilep[8], kocani[8], tetovo[8]);
+    mesecenProsek[9]=oktomvriProsek(struga[9], bitola[9], skopje[9], kicevo[9], ohrid[9], resen[9], gevgelija[9], prilep[9], kocani[9], tetovo[9]);
+	  mesecenProsek[10]=noemvriProsek(struga[10], bitola[10], skopje[10], kicevo[10], ohrid[10], resen[10], gevgelija[10], prilep[10], kocani[10], tetovo[10]);
+    mesecenProsek[11]=dekemvriProsek(struga[11], bitola[11], skopje[11], kicevo[11], ohrid[11], resen[11], gevgelija[11], prilep[11], kocani[11], tetovo[11]);
+
+    //Pronaoganje na najtopliot mesec od godinata i pecatenje na ekranot
+
+    najtopolMesec=distance(mesecenProsek, max_element(mesecenProsek, mesecenProsek + sizeof(mesecenProsek)/sizeof(mesecenProsek[0])));
+
+    switch (najtopolMesec) {
+    case 0:
+        cout<<"Najtopol mesec e Januar so prosecna temperatura od: "<<mesecenProsek[0]<<" so najtopol grad: ";
+        break;
+
+    case 1:
+        cout<<"Najtopol mesec e Fevruar so prosecna temperatura od: "<<mesecenProsek[1]<<" so najtopol grad: ";
+        break;
+
+    case 2:
+        cout<<"Najtopol mesec e Mart so prosecna temperatura od: "<<mesecenProsek[2]<<" so najtopol grad: ";
+        break;
+
+    case 3:
+        cout<<"Najtopol mesec e April so prosecna temperatura od: "<<mesecenProsek[3]<<" so najtopol grad: ";
+        break;
+
+    case 4:
+        cout<<"Najtopol mesec e Maj so prosecna temperatura od: "<<mesecenProsek[4]<<" so najtopol grad: ";
+        break;
+
+    case 5:
+        cout<<"Najtopol mesec e Juni so prosecna temperatura od: "<<mesecenProsek[5]<<" so najtopol grad: ";
+        break;
+
+    case 6:
+        cout<<"Najtopol mesec e Juli so prosecna temperatura od: "<<mesecenProsek[6]<<" so najtopol grad: ";
+        break;
+
+    case 7:
+        cout<<"Najtopol mesec e Avgust so prosecna temperatura od: "<<mesecenProsek[7]<<" so najtopol grad: ";
+        break;
+		 case 8:
+        cout<<"Najtopol mesec e Septemvri so prosecna temperatura od: "<<mesecenProsek[8]<<" so najtopol grad: ";
+        break;
+
+    case 9:
+        cout<<"Najtopol mesec e Oktomvri so prosecna temperatura od: "<<mesecenProsek[9]<<" so najtopol grad: ";
+        break;
+
+    case 10:
+        cout<<"Najtopol mesec e Nomevri so prosecna temperatura od: "<<mesecenProsek[10]<<" so najtopol grad: ";
+        break;
+
+    case 11:
+        cout<<"Najtopol mesec e Dekemvri so prosecna temperatura od: "<<mesecenProsek[11]<<" so najtopol grad: ";
+        break;
+    }
+
+    //Pronaoganje na najtopliot grad vo najtopliot mesec i pecatenje na ekranot
+
+    najtopolGrad = gradMesec(struga[najtopolMesec], bitola[najtopolMesec], skopje[najtopolMesec], kicevo[najtopolMesec], ohrid[najtopolMesec], resen[najtopolMesec], gevgelija[najtopolMesec], prilep[najtopolMesec], kocani[najtopolMesec], tetovo[najtopolMesec]); //Klaudija Kondovska
+
+    switch (najtopolGrad) {
+
+    case 0:
+        cout<<"Struga!";
+        break;
+    case 1:
+        cout<<"Bitola!";
+        break;
+    case 2:
+        cout<<"Skopje!";
+        break;
+    case 3:
+        cout<<"Kicevo!";
+        break;
+    case 4:
+        cout<<"Ohrid!";
+        break;
+    case 5:
+        cout<<"Resen!";
+        break;
+    case 6:
+	cout<<"Gevgelija!";
+        break;
+    case 7:
+        cout<<"Prilep!";
+        break;
+    case 8:
+        cout<<"Kocani!";
+        break;
+    case 9:
+        cout<<"Tetovo!";
+        break;
+    }
+
+    return 0;
+}
+
+//Funkcija za presmetka na godisnite prosecni temperaturi na gradovite
+
+int godisenProsekGrad(int grad[12]){
+
+    int suma=0;
+    int i;
+
+    for (i=0; i<12; i++){
+        suma=grad[i]+suma;
+    }
+
+    return(suma);
+}
+
+//Funkcii za presmetka na prosecnite temperaturi na gradovite po godisni vreminja
+
+double proletProsek(int grad[12]){
+
+    int suma=0;
+    int i;
+
+    suma=grad[2]+grad[3]+grad[4];
+    return suma/3.0;
+	}
+
+double letoProsek(int grad[12]){
+
+    int suma=0;
+    int i;
+
+    suma=grad[5]+grad[6]+grad[7];
+    return suma/3.0;
+}
+
+double esenProsek(int grad[12]){
+
+    int suma=0;
+    int i;
+
+    suma=grad[8]+grad[9]+grad[10];
+    return suma/3.0;
+}
+
+double zimaProsek(int grad[12]){
+
+    int suma=0;
+    int i;
+
+    suma=grad[11]+grad[0]+grad[1];
+    return suma/3.0;
+}
+
+//Funkcii za presmetka na mesecnite prosecni temperaturi od site gradovi
+
+double januarProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    int suma = 0;
+
+    suma = su+bt+sk+ki+oh+re+ge+pp+ko+te;
+    return suma/10.0;
+	}
+
+double fevruarProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    int suma = 0;
+
+    suma = su+bt+sk+ki+oh+re+ge+pp+ko+te;
+    return suma/10.0;
+
+}
+
+double martProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    int suma = 0;
+
+    suma = su+bt+sk+ki+oh+re+ge+pp+ko+te;
+    return suma/10.0;
+
+}
+
+double aprilProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    int suma = 0;
+
+    suma = su+bt+sk+ki+oh+re+ge+pp+ko+te;
+    return suma/10.0;
+
+}
+
+double majProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    int suma = 0;
+
+    suma = su+bt+sk+ki+oh+re+ge+pp+ko+te;
+    return suma/10.0;
+	
+}
+
+double juniProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    int suma = 0;
+
+    suma = su+bt+sk+ki+oh+re+ge+pp+ko+te;
+    return suma/10.0;
+
+}
+
+double juliProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    int suma = 0;
+
+    suma = su+bt+sk+ki+oh+re+ge+pp+ko+te;
+    return suma/10.0;
+
+}
+
+double avgustProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    int suma = 0;
+
+    suma = su+bt+sk+ki+oh+re+ge+pp+ko+te;
+    return suma/10.0;
+
+}
+
+double septemvriProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    int suma = 0;
+
+    suma = su+bt+sk+ki+oh+re+ge+pp+ko+te;
+    return suma/10.0;
+
+}
+
+double oktomvriProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    int suma = 0;
+ suma = su+bt+sk+ki+oh+re+ge+pp+ko+te;
+    return suma/10.0;
+
+}
+
+double noemvriProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    int suma = 0;
+
+    suma = su+bt+sk+ki+oh+re+ge+pp+ko+te;
+    return suma/10.0;
+
+}
+
+double dekemvriProsek(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    int suma = 0;
+
+    suma = su+bt+sk+ki+oh+re+ge+pp+ko+te;
+    return suma/10.0;
+
+}
+
+//Funkcija za presmetka na najtopliot grad vo najtopliot mesec od godinata
+
+double gradMesec(int su, int bt, int sk, int ki, int oh, int re, int ge, int pp, int ko, int te){
+
+    float arr[12]={su, bt, sk, ki, oh, re, ge, pp, ko, te};
+
+    return distance(arr, max_element(arr, arr + sizeof(arr)/sizeof(arr[0])));
+
+}
